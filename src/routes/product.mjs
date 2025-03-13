@@ -28,8 +28,10 @@ router.post('/api/products',checkSchema(ValidateProduct),(request,response)=>{
 // get products
 router.get('/api/products',(request,response)=>{
     // console.log(request.headers.cookie)
-    console.log(request.cookies.hello)
-    if(request.cookies.hello&&request.cookies.hello==='world')return response.send(products)
+    // console.log(request.signedCookies.hello+" from here")
+    console.log(request.signedCookies.hello+ "signed cookie")
+    
+    if(request.signedCookies.hello&&request.signedCookies.hello==='world')return response.send(products)
     return response.status(403).send({msg:"sorry you need the correct cookie to access this endpoint"})
 })
 

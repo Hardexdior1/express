@@ -10,9 +10,19 @@ const router=Router()
 router.get('/api/users', [query("filter").isString().withMessage('filter value must be a string')
     .notEmpty().withMessage('filter must not be empty').isLength({min:5,max:10})
     .withMessage("characters must be minimum of 5 and maximum of 10")],(request,response)=>{
+
+        console.log(request.session.id)
+        request.sessionStore.get(request.session.id,(err,sessionData)=>{
+            if (err){
+                console.log(err);
+                throw err;
+            }
+            console.log(sessionData+"  session data")
+
+        })
     const {query:{filter}}=request
     const validate=validationResult(request)
-    console.log(validate)
+    
     if(!filter)response.status(400).send({errors:validate.array()});
 
     const result=mockUsers.filter((item)=>item.userName.includes(filter))
